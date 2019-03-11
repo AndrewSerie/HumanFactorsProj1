@@ -50,6 +50,24 @@ class MainView(tk.Frame):
         viewCheckoutPageRef.place(in_=self, x=0, y=0, relwidth=1, relheight=1)
         viewCheckoutPageRef.show()
 
+def aboutUs():
+    aboutUsWindow = tk.Tk()
+    aboutUsWindow.wm_title("About")
+    aboutUsWindow.wm_geometry("385x250")
+    aboutUsWindow.configure(background = "white")
+    tk.Label(aboutUsWindow, text="About us").pack()
+    B1 = ttk.Button(aboutUsWindow, text="Okay", command= lambda: aboutUsWindow.destroy())
+    B1.pack()
+
+def contactUs():
+    contactUsWindow = tk.Tk()
+    contactUsWindow.wm_title("Contact Information")
+    contactUsWindow.wm_geometry("385x250")
+    contactUsWindow.configure(background = "white")
+    tk.Label(contactUsWindow, text="Contact us").pack()
+    B1 = ttk.Button(contactUsWindow, text="Okay", command= lambda: contactUsWindow.destroy())
+    B1.pack()
+
 if __name__ == "__main__":
     root = tk.Tk()
     main = MainView(root)
@@ -64,8 +82,9 @@ if __name__ == "__main__":
     mainImage.grid(row = 0, column = 0, sticky = "n", columnspan = 4)
     menuBar = tk.Menu(main)
     helpMenu = tk.Menu(menuBar, tearoff = 0)
-    helpMenu.add_command(label = 'About', underline = 0)
-    helpMenu.add_command(label = 'Contact', underline = 0)
+    helpMenu.add_command(label = 'About', underline = 0, command = aboutUs)
+    helpMenu.add_command(label = 'Contact', underline = 0, command = contactUs)
     menuBar.add_cascade(label = "Help", menu = helpMenu)
     root.config(menu = menuBar)
     root.mainloop()
+
