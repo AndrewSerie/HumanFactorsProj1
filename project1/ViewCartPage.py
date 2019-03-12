@@ -32,7 +32,7 @@ class ViewCartPage(Page):
                 boxItem = tk.Label(label, image=box.image)
                 boxItem.image = box.image
                 boxItem.grid(column=0, row=row, rowspan=2)
-                tk.Label(label, text=box.description + "\n" +
+                tk.Label(label, text=box.name + "\n" +
                          "$" + str(box.price) + "/ea").grid(column=1, row=row)
                 tk.Label(label, text=self.getAddOns(
                     box)).grid(column=1, row=row+1)
@@ -54,7 +54,7 @@ class ViewCartPage(Page):
             self.cart.append(newBox)
         else:
             for box in self.cart:
-                if(box.description == newBox.description):
+                if(box.name == newBox.name):
                     box.quantity = newBox.quantity
                     box.addOns = list(newBox.addOns)
                     found = True

@@ -21,12 +21,12 @@ class MainView(tk.Frame):
         squareBox = tk.PhotoImage(file=rf"{squareBoxPath}")
         rectangleBox = tk.PhotoImage(file=rf"{rectangleBoxPath}")
 
-        boxes = [Box("8\" Square Box",0.51, squareBox),
-                 Box("11\" Square Box",1.22,squareBox),
-                 Box("15\" Square Box",1.75,squareBox),
-                 Box("12\"x9\"x6\" Rectangle Box",2.37,rectangleBox),
-                 Box("14\"x11\"x8\" Rectangle Box",2.99,rectangleBox),
-                 Box("16\"x13\"x10\" Rectangle Box",3.44,rectangleBox),
+        boxes = [Box("8\" Square Box",0.51, squareBox, "Small 8in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("11\" Square Box",1.22,squareBox, "Medium 11in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("15\" Square Box",1.75,squareBox, "Large 15in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("12\"x9\"x6\" Rectangle Box",2.37,rectangleBox, "Small rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("14\"x11\"x8\" Rectangle Box",2.99,rectangleBox, "Medium rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("16\"x13\"x10\" Rectangle Box",3.44,rectangleBox, "Large rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  ]
 
         tk.Button(self, text = 'Cart', command= self.ViewCartPageNav).grid(row = 0, column = 2, sticky = "n")
@@ -36,7 +36,7 @@ class MainView(tk.Frame):
             boxItem = tk.Label(self,image = box.image)
             boxItem.image = box.image
             boxItem.grid(row = rowCount, column = columnCount, padx = 75)
-            tk.Button(self, command = lambda box = box: self.ViewItemPageNav(box), text = box.description + "\n" + "$" + str(box.price) + "/ea").grid(row = rowCount+1, column = columnCount, padx = 75)
+            tk.Button(self, command = lambda box = box: self.ViewItemPageNav(box), text = box.name + "\n" + "$" + str(box.price) + "/ea").grid(row = rowCount+1, column = columnCount, padx = 75)
             columnCount = columnCount+1
             if(columnCount > 2):
                 columnCount = 0
