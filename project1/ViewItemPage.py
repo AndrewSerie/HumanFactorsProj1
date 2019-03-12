@@ -70,7 +70,7 @@ class ViewItemPage(Page):
         # Set Product price
         tk.Label(self.label, text="Price ",
                  font="Helvetica 20 bold").grid(row=2, column=3, sticky="w")
-        tk.Label(self.label, text="$"+str(box.price)+"/ea",
+        tk.Label(self.label, text="$"+"{:.2f}".format(box.price)+"/ea",
                  font="Helvetica 20").grid(row=2, column=4, columnspan=2, sticky="w")
 
         # Set stock status
@@ -113,10 +113,6 @@ class ViewItemPage(Page):
     # clear out the box
     def clearBox(self):
         self.box = None
-
-    # Update quantity trace
-    def updateQuantity(self, *args):
-        print("quantity updated")  # idk just need something here
 
     # Add item to the cart
     def addToCart(self):
