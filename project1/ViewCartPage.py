@@ -6,6 +6,7 @@ from pathlib import Path    # Handing cross-platform paths
 
 class ViewCartPage(Page):
     cart = []
+    cartItems = []
 
     def __init__(self, master=None, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
@@ -32,8 +33,11 @@ class ViewCartPage(Page):
         # Set nav buttons
         tk.Button(self.label, text='Back to Store', width=15,
                   command=self.hide).grid(row=0, column=0, columnspan=2, sticky="nw")
+        cartDisabled = "normal"
+        if (len(self.cart) < 1):
+            cartDisabled = "disabled"
         tk.Button(self.label, text='Clear Cart', width=15,
-                  command=self.clearCart).grid(row=0, column=10, columnspan=2, sticky="ne")
+                  command=self.clearCart, state=cartDisabled).grid(row=0, column=10, columnspan=2, sticky="ne")
 
         # Set Main Image
         cwd = os.getcwd()
@@ -50,6 +54,10 @@ class ViewCartPage(Page):
         tk.Label(self.label, text='Apply a 10% discount with a purchase of 150 boxes or more', fg="dark red", font="Helvetica 20 bold").grid(
             row=2, column=2, columnspan=8)
 
+        # setup the cart
+        self.setCart()
+
+    def setCart(self):
         if(len(self.cart) > 0):
             # display cart contents
             currentRow = 3
@@ -60,34 +68,51 @@ class ViewCartPage(Page):
                 boxItem.image = box.imageSm
                 boxItem.grid(column=0, columnspan=3,
                              row=currentRow, rowspan=2)
+                self.cartItems.append(boxItem)
 
                 # Set Product Name
-                tk.Label(self.label, text=box.name,
-                         font="Helvetica 15 bold").grid(row=currentRow, column=3, columnspan=3, sticky="w")
+                name = tk.Label(self.label, text=box.name,
+                                font="Helvetica 15 bold")
+                name.grid(row=currentRow, column=3, columnspan=3, sticky="w")
+                self.cartItems.append(name)
 
                 # Set Product price
-                tk.Label(self.label, text="Price ",
-                         font="Helvetica 15 bold").grid(row=currentRow+1, column=3, sticky="w")
-                tk.Label(self.label, text="$"+"{:.2f}".format(box.price)+"/ea",
-                         font="Helvetica 15").grid(row=currentRow+1, column=4, columnspan=2, sticky="w")
+                price = tk.Label(self.label, text="Price ",
+                                 font="Helvetica 15 bold")
+                price.grid(row=currentRow+1, column=3, sticky="w")
+                priceAct = tk.Label(self.label, text="$"+"{:.2f}".format(box.price)+"/ea",
+                                    font="Helvetica 15")
+                priceAct.grid(row=currentRow+1, column=4,
+                              columnspan=2, sticky="w")
+                self.cartItems.append(price)
+                self.cartItems.append(priceAct)
 
                 # show addons
-                tk.Label(self.label, text=self.getAddOns(
-                    box)).grid(column=3, row=currentRow+2, columnspan=5, sticky="w")
+                addons = tk.Label(self.label, text=self.getAddOns(
+                    box))
+                addons.grid(column=3, row=currentRow +
+                            2, columnspan=5, sticky="w")
+                self.cartItems.append(addons)
 
                 # show quantity of boxes
-                tk.Label(self.label, text="Quantity: " + str(box.quantity)
-                         ).grid(column=9, row=currentRow, sticky="e")
+                quant = tk.Label(self.label, text="Quantity: " + str(box.quantity)
+                                 )
+                quant.grid(column=9, row=currentRow, sticky="e")
                 total += self.getBoxTotal(box)
                 currentRow += 3
+                self.cartItems.append(quant)
 
             # display totoal
-            tk.Label(self.label, text="Total: $" +
-                     "{:.2f}".format(total)).grid(column=5, row=currentRow, sticky="e")
+            totalLab = tk.Label(self.label, text="Total: $" +
+                                "{:.2f}".format(total))
+            totalLab.grid(column=5, row=currentRow, sticky="e")
+            self.cartItems.append(totalLab)
 
             # checkout button
-            tk.Button(self.label, text='Checkout', command=self.ViewCheckoutPageNav).grid(
-                row=currentRow+1, column=5, sticky="e")
+            checkoutBtn = tk.Button(
+                self.label, text='Checkout', command=self.ViewCheckoutPageNav)
+            checkoutBtn.grid(row=currentRow+1, column=5, sticky="e")
+            self.cartItems.append(checkoutBtn)
         else:
             # display empty cart message
             tk.Label(self.label, text='Your cart is empty!', font="Helvetica 25 bold").grid(
@@ -110,6 +135,13 @@ class ViewCartPage(Page):
 
     def clearCart(self):
         self.cart.clear()
+
+        # remove all cart related items
+        for item in self.cartItems:
+            item.grid_forget()
+
+        # reset cart
+        self.setCart()
 
     def getAddOns(self, box):
         addOnList = "Add-on items: "
