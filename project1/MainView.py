@@ -1,16 +1,28 @@
 import tkinter as tk
 from tkinter import ttk
+import os
+from pathlib import Path    # Handing cross-platform paths
+# Pages
 from box import Box
 from ViewCartPage import ViewCartPage
 from ViewItemPage import ViewItemPage
 from CheckoutPage import CheckoutPage
-import os
+
+# Class for MainView
 class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        scriptDir = os.getcwd()
-        squareBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box1.png")
-        rectangleBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box2.png")
+
+        # Set Images
+        cwd = os.getcwd()
+        imagesPath = Path(cwd, "images")
+        squareBoxPath = imagesPath / "box1.png"
+        rectangleBoxPath = imagesPath / "box2.png"
+        squareBox = tk.PhotoImage(file=rf"{squareBoxPath}")
+        rectangleBox = tk.PhotoImage(file=rf"{rectangleBoxPath}")
+
+        #squareBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box1.png")
+        #rectangleBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box2.png")
 
         boxes = [Box("8\" Square Box",0.51, squareBox),
                  Box("11\" Square Box",1.22,squareBox),
@@ -27,7 +39,7 @@ class MainView(tk.Frame):
             boxItem = tk.Label(self,image = box.image)
             boxItem.image = box.image
             boxItem.grid(row = rowCount, column = columnCount, padx = 75)
-            boxButton = tk.Button(self, command = lambda box = box: self.ViewItemPageNav(box), text = box.description + "\n" + "$" + str(box.price) + "/ea").grid(row = rowCount+1, column = columnCount, padx = 75)
+            tk.Button(self, command = lambda box = box: self.ViewItemPageNav(box), text = box.description + "\n" + "$" + str(box.price) + "/ea").grid(row = rowCount+1, column = columnCount, padx = 75)
             columnCount = columnCount+1
             if(columnCount > 2):
                 columnCount = 0
@@ -69,22 +81,31 @@ def contactUs():
     B1.pack()
 
 if __name__ == "__main__":
+    # Window configure
     root = tk.Tk()
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
     root.title("BlueBox")
     root.wm_geometry("1280x720")
     root.configure(background = "white")
-    scriptDir = os.getcwd()
-    img = tk.PhotoImage(file=rf"{scriptDir}\UIProj\bluebox.png")
+
+    # Main image
+    cwd = os.getcwd()
+    imagesPath = Path(cwd, "images")
+    imgPath = imagesPath / "bluebox.png"
+    img = tk.PhotoImage(file=rf"{imgPath}")
     mainImage = tk.Label(main, image = img)
     mainImage.image = img
     mainImage.grid(row = 0, column = 0, sticky = "n", columnspan = 4)
+
+    # Menu Bar
     menuBar = tk.Menu(main)
     helpMenu = tk.Menu(menuBar, tearoff = 0)
     helpMenu.add_command(label = 'About', underline = 0, command = aboutUs)
     helpMenu.add_command(label = 'Contact', underline = 0, command = contactUs)
     menuBar.add_cascade(label = "Help", menu = helpMenu)
     root.config(menu = menuBar)
+
+    # main loop
     root.mainloop()
 
