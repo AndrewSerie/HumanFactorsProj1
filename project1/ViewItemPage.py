@@ -103,7 +103,7 @@ class ViewItemPage(Page):
         for pick in self.addOns:
             var = tk.IntVar()
             chk = ttk.Checkbutton(
-                self.label, text=pick.name + " $" + "{:.2f}".format(pick.price), variable=var, style="SE.TCheckbutton")
+                self.label, text=pick.name + " $" + "{:.2f}".format(pick.price), variable=var)
             chk.grid(row=row, column=7, columnspan=3, sticky="w", pady=5)
             row += 1
             self.vars.append(var)
@@ -122,7 +122,7 @@ class ViewItemPage(Page):
         for var in self.vars:
             if(var.get() == 1):
                 self.box.addOns.append(self.addOns[count])
-                count += 1
+            count += 1
         self.box.quantity = self.boxQ.get()
         self.cart.addItemToCart(self.box)
         tk.messagebox.showinfo(

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from page import Page
 import os
 from pathlib import Path    # Handing cross-platform paths
@@ -58,6 +59,7 @@ class ViewCartPage(Page):
         self.setCart()
 
     def setCart(self):
+        self.cartItems.clear()
         if(len(self.cart) > 0):
             # display cart contents
             currentRow = 3
@@ -66,31 +68,27 @@ class ViewCartPage(Page):
                 # set product image
                 boxItem = tk.Label(self.label, image=box.imageSm)
                 boxItem.image = box.imageSm
-                boxItem.grid(column=0, columnspan=3,
-                             row=currentRow, rowspan=2)
+                boxItem.grid(column=0, columnspan=2,
+                             row=currentRow, rowspan=4)
                 self.cartItems.append(boxItem)
 
                 # Set Product Name
                 name = tk.Label(self.label, text=box.name,
                                 font="Helvetica 15 bold")
-                name.grid(row=currentRow, column=3, columnspan=3, sticky="w")
+                name.grid(row=currentRow, column=2, columnspan=3, sticky="w")
                 self.cartItems.append(name)
 
                 # Set Product price
-                price = tk.Label(self.label, text="Price ",
-                                 font="Helvetica 15 bold")
-                price.grid(row=currentRow+1, column=3, sticky="w")
-                priceAct = tk.Label(self.label, text="$"+"{:.2f}".format(box.price)+"/ea",
-                                    font="Helvetica 15")
-                priceAct.grid(row=currentRow+1, column=4,
-                              columnspan=2, sticky="w")
+                price = tk.Label(self.label, text="Price: $"+"{:.2f}".format(box.price)+"/ea",
+                                 font="Helvetica 15")
+                price.grid(row=currentRow+1, column=2,
+                           columnspan=3, sticky="w")
                 self.cartItems.append(price)
-                self.cartItems.append(priceAct)
 
                 # show addons
                 addons = tk.Label(self.label, text=self.getAddOns(
                     box))
-                addons.grid(column=3, row=currentRow +
+                addons.grid(column=2, row=currentRow +
                             2, columnspan=5, sticky="w")
                 self.cartItems.append(addons)
 
@@ -99,19 +97,25 @@ class ViewCartPage(Page):
                                  )
                 quant.grid(column=9, row=currentRow, sticky="e")
                 total += self.getBoxTotal(box)
-                currentRow += 3
                 self.cartItems.append(quant)
 
-            # display totoal
+                # seperator
+                sep = ttk.Separator(self.label)
+                sep.grid(row=currentRow+4, column=0,
+                         columnspan=10, sticky="ew")
+                self.cartItems.append(sep)
+                currentRow += 5
+
+            # display total
             totalLab = tk.Label(self.label, text="Total: $" +
                                 "{:.2f}".format(total))
-            totalLab.grid(column=5, row=currentRow, sticky="e")
+            totalLab.grid(column=9, row=currentRow, sticky="e")
             self.cartItems.append(totalLab)
 
             # checkout button
             checkoutBtn = tk.Button(
-                self.label, text='Checkout', command=self.ViewCheckoutPageNav)
-            checkoutBtn.grid(row=currentRow+1, column=5, sticky="e")
+                self.label, text='Checkout', font="Helvetica 18", command=self.ViewCheckoutPageNav)
+            checkoutBtn.grid(row=currentRow+1, column=9, sticky="e")
             self.cartItems.append(checkoutBtn)
         else:
             # display empty cart message
@@ -126,19 +130,19 @@ class ViewCartPage(Page):
             self.cart.append(newBox)
         else:
             for box in self.cart:
-                if(box.name == newBox.name):
-                    box.quantity = newBox.quantity
-                    box.addOns = list(newBox.addOns)
+                if(box.name == newBox.name and box.addOns == newBox.addOns):
+                    box.quantity += newBox.quantity
                     found = True
             if(found == False):
                 self.cart.append(newBox)
 
     def clearCart(self):
-        self.cart.clear()
-
         # remove all cart related items
+        # possible improvement of placing items in a frame and just forgetting the whole frame
         for item in self.cartItems:
             item.grid_forget()
+        self.cartItems.clear()
+        self.cart.clear()
 
         # reset cart
         self.setCart()
