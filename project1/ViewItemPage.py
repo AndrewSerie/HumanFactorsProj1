@@ -25,7 +25,7 @@ class ViewItemPage(Page):
 
         # Set breadcrumb frame
         self.label = tk.LabelFrame(
-            self, text="Store > View Item", padx=10, pady=10)
+            self, text="Store > Item", padx=10, pady=10)
         self.label.pack(side="top", fill="both", expand=True)
 
         # configure grid weights (resize)
@@ -118,16 +118,20 @@ class ViewItemPage(Page):
 
     # Add item to the cart
     def addToCart(self):
-        count = 0
-        for var in self.vars:
-            if(var.get() == 1):
-                self.box.addOns.append(self.addOns[count])
-            count += 1
-        self.box.quantity = self.boxQ.get()
-        self.cart.addItemToCart(self.box)
-        tk.messagebox.showinfo(
-            "Added to cart", "Success! The item was added to your cart.")
-        self.hide()
+        if(self.boxQ.get() <= 0):
+            tk.messagebox.showwarning(
+                "Quantity error", "You need to have a quantity greater than 0 to add to your cart!")
+        else:
+            count = 0
+            for var in self.vars:
+                if(var.get() == 1):
+                    self.box.addOns.append(self.addOns[count])
+                count += 1
+            self.box.quantity = self.boxQ.get()
+            self.cart.addItemToCart(self.box)
+            tk.messagebox.showinfo(
+                "Added to cart", "Success! The item was added to your cart.")
+            self.hide()
 
     # Nav to ViewCart page
     def ViewCartPageNav(self):

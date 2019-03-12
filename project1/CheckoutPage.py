@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from page import Page
 from ViewCartPage import ViewCartPage
 import os
@@ -14,7 +15,7 @@ class CheckoutPage(Page):
 
         # Set breadcrumb frame
         self.label = tk.LabelFrame(
-            self, text="Store > View Item", padx=10, pady=10)
+            self, text="Store > Cart > Checkout", padx=10, pady=10)
         self.label.pack(side="top", fill="both", expand=True)
 
         # configure grid weights (resize)
@@ -46,45 +47,59 @@ class CheckoutPage(Page):
         mainImage.image = img
         mainImage.grid(row=0, column=2, columnspan=8)
 
-        self.fields = ["Full Name", "Address", "City", "State",
+        self.fields = ["Full Name", "Address", "Suite/Apt", "City", "State",
                        "Zip Code", "Card Number", "EXP", "CVV2", "Billing Zip"]
         self.entries = []
-        row = 7
+
+        # add fields
+        row = 1
         col = 1
-        ##vcmd = self.register(self.validate)
         for field in self.fields:
-            lab = tk.Label(self.label, text=field, anchor='w')
-            ##ent = tk.Entry(self.label,validate='key', validatecommand=(vcmd, '%P'))
-            ent = tk.Entry(self.label)
-            ent.bind("<Button-1>", lambda event,
-                     ent=ent: self.clearFieldOnClick(event, ent))
-            lab.grid(row=row, column=col)
-            ent.grid(row=row, column=col+1)
-            self.entries.append((field, ent, row))
+            lab = tk.Label(self.label, text=field, font="Helvetica 14 bold")
+            entry = tk.Entry(self.label)
+            entry.bind("<Button-1>", lambda event,
+                       entry=entry: self.clearFieldOnClick(event, entry))
+            lab.grid(row=row, column=col, sticky="w")
+            entry.grid(row=row, column=col+1)
+            self.entries.append((field, entry, row))
             row += 1
 
-        if(self.getNumBoxes() >= 50):
-            tk.Label(self.label, text="Your order has qualified for free shipping!").grid(
-                row=16, column=4)
-        else:
-            tk.Label(self.label, text="Shipping = {:.2f}".format(
-                self.getOrderTotal() * .05)).grid(row=16, column=4)
+        # Discounts
         if(self.getNumBoxes() >= 150):
-            tk.Label(self.label, text="Your total is {:.2f}".format(
-                self.getOrderTotal() * .9)).grid(row=17, column=4)
+            tk.Label(self.label, text="Your order has qualified for a 10% discount and free shipping!", fg="dark red").grid(
+                row=12, column=6, columnspan=5, sticky="w")
+        elif(self.getNumBoxes() >= 50):
+            tk.Label(self.label, text="Your order has qualified for free shipping!", fg="dark red").grid(
+                row=12, column=6, columnspan=5, sticky="w")
         else:
-            tk.Label(self.label, text="Your total is {:.2f}".format(
-                self.getOrderTotal())).grid(row=17, column=4)
+            tk.Label(self.label, text="Sorry, you do not qualify for any discounts.\nOrder at least 50 boxes for free shipping and 150 boxes for a 10% discount.", fg="dark red", wraplength=500, justify="left").grid(
+                row=12, column=6, columnspan=5, sticky="w",)
+
+        # Subtotal
+        tk.Label(self.label, text="Sub total: ${:.2f}".format(
+            self.getOrderTotal())).grid(row=13, column=6, columnspan=5, sticky="w")
+
+        # shipping
         if(self.getNumBoxes() < 50):
-            tk.Label(self.label, text="Sorry, you do not qualify for any discounts\n You must order at least 50 boxes for free shipping and 150 boxes for a 10% discount.").grid(
-                row=18, column=4)
+            tk.Label(self.label, text="Shipping: ${:.2f}".format(
+                self.getOrderTotal() * .05)).grid(row=14, column=6, columnspan=5, sticky="w")
+
+        # 10% discount notify
+        if(self.getNumBoxes() >= 150):
+            tk.Label(self.label, text="Total: ${:.2f}".format(
+                self.getOrderTotal() * .9)).grid(row=15, column=6, columnspan=5, sticky="w")
+        elif(self.getNumBoxes() >= 50):
+            tk.Label(self.label, text="Total: ${:.2f}".format(
+                self.getOrderTotal())).grid(row=15, column=6, columnspan=5, sticky="w")
+        else:
+            tk.Label(self.label, text="Total: ${:.2f}".format(
+                self.getOrderTotal()*1.05)).grid(row=15, column=6, columnspan=5, sticky="w")
 
         tk.Button(
-            self.label, command=self.validate, text='Submit', width=10).grid(row=19, column=4)
+            self.label, command=self.validate, text='Submit Order', font="Helvetica 18", width=15).grid(row=16, column=6, sticky="w")
 
     def clearFieldOnClick(self, event, e):
         e.delete(0, "end")
-        ##self.submit.config(state = NORMAL)
 
     def validate(self):
         error = False
@@ -96,17 +111,12 @@ class CheckoutPage(Page):
             self.processOrder()
 
     def errorMessage(self, field):
-        field.insert(0, "Field Invalid!")
-        ##self.submit.config(state = DISABLED)
+        field.insert(0, "This field is required")
 
     def processOrder(self):
-        orderComplete = tk.Tk()
-        orderComplete.wm_title("Order Success")
-        tk.Label(orderComplete,
-                 text="Congratulations! Your order has been completed").pack()
-        B1 = ttk.Button(orderComplete, text="Okay",
-                        command=lambda: self.navHome(orderComplete))
-        B1.pack()
+        tk.messagebox.showinfo(
+            "Order Success", "Your order has been placed successfully!")
+        self.navHome()
 
     def ViewCartPageNav(self):
         self.hide()
@@ -121,7 +131,6 @@ class CheckoutPage(Page):
             total += self.cart.getBoxTotal(box)
         return total
 
-    def navHome(self, orderCompleteWindow):
-        orderCompleteWindow.destroy()
+    def navHome(self):
         self.cart.cart.clear()
         self.hide()

@@ -14,7 +14,7 @@ class ViewCartPage(Page):
 
         # Set breadcrumb frame
         self.label = tk.LabelFrame(
-            self, text="Store > View Cart", padx=10, pady=10)
+            self, text="Store > Cart", padx=10, pady=10)
         self.label.pack(side="top", fill="both", expand=True)
 
         # configure grid weights (resize)
