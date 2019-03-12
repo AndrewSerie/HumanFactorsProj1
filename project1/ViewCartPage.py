@@ -32,6 +32,8 @@ class ViewCartPage(Page):
         # Set nav buttons
         tk.Button(self.label, text='Back to Store', width=15,
                   command=self.hide).grid(row=0, column=0, columnspan=2, sticky="nw")
+        tk.Button(self.label, text='Clear Cart', width=15,
+                  command=self.clearCart).grid(row=0, column=10, columnspan=2, sticky="ne")
 
         # Set Main Image
         cwd = os.getcwd()
@@ -71,13 +73,13 @@ class ViewCartPage(Page):
 
                 # show addons
                 tk.Label(self.label, text=self.getAddOns(
-                    box)).grid(column=3, row=currentRow+2, sticky="w")
+                    box)).grid(column=3, row=currentRow+2, columnspan=5, sticky="w")
 
                 # show quantity of boxes
                 tk.Label(self.label, text="Quantity: " + str(box.quantity)
                          ).grid(column=9, row=currentRow, sticky="e")
                 total += self.getBoxTotal(box)
-                currentRow += 2
+                currentRow += 3
 
             # display totoal
             tk.Label(self.label, text="Total: $" +
@@ -89,7 +91,7 @@ class ViewCartPage(Page):
         else:
             # display empty cart message
             tk.Label(self.label, text='Your cart is empty!', font="Helvetica 25 bold").grid(
-                row=3, column=5, columnspan=2, pady=(30, 0))
+                row=3, column=2, columnspan=8, pady=(30, 0))
             tk.Button(self.label, text='Back to Store', width=15,
                       command=self.hide).grid(row=4, column=5, columnspan=2)
 
