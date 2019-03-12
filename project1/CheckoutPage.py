@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from page import Page
+from field import Field
 from ViewCartPage import ViewCartPage
 import os
 from pathlib import Path    # Handing cross-platform paths
@@ -33,10 +34,10 @@ class CheckoutPage(Page):
         self.label.grid_columnconfigure(11, weight=1)
 
         # Set nav buttons
-        tk.Button(self.label, text='Back to Store', width=15,
-                  command=self.hide).grid(row=0, column=0, columnspan=2, sticky="nw")
-        tk.Button(self.label, text='Cart', width=15,
-                  command=self.ViewCartPageNav).grid(row=0, column=10, columnspan=2, sticky="ne")
+        tk.Button(self.label, text='Back to Cart', width=15,
+                  command=self.ViewCartPageNav).grid(row=0, column=0, columnspan=2, sticky="nw")
+        tk.Button(self.label, text='Store', width=15,
+                  command=self.hide).grid(row=0, column=10, columnspan=2, sticky="ne")
 
         # Set Main Image
         cwd = os.getcwd()
@@ -47,22 +48,53 @@ class CheckoutPage(Page):
         mainImage.image = img
         mainImage.grid(row=0, column=2, columnspan=8)
 
-        self.fields = ["Full Name", "Address", "Suite/Apt", "City", "State",
-                       "Zip Code", "Card Number", "EXP", "CVV2", "Billing Zip"]
-        self.entries = []
+        self.fields = [
+            Field("Full Name", True),
+            Field("Address", True),
+            Field("Suite/Apt", False),
+            Field("City", True),
+            Field("State", True),
+            Field("Zip Code", True),
+            Field("Card Number", True),
+            Field("Exp", True),
+            Field("CVV2", True),
+            Field("Billing Zip", True)
+        ]
 
-        # add fields
+        # Add fields
+        self.entries = []
         row = 1
         col = 1
         for field in self.fields:
-            lab = tk.Label(self.label, text=field, font="Helvetica 14 bold")
+            # set label
+            labelText = field.name
+            if(field.required):
+                labelText += "*"
+            lab = tk.Label(self.label, text=labelText,
+                           font="Helvetica 14 bold")
+            lab.grid(row=row, column=col, sticky="w")
+
+            # set entry field
             entry = tk.Entry(self.label)
             entry.bind("<Button-1>", lambda event,
                        entry=entry: self.clearFieldOnClick(event, entry))
-            lab.grid(row=row, column=col, sticky="w")
-            entry.grid(row=row, column=col+1)
+            entry.grid(row=row, column=col+1, columnspan=2)
+
             self.entries.append((field, entry, row))
             row += 1
+
+            # Place card info image after zip (much better ways to go about this) -AS
+            if(field.name == "Zip Code"):
+                tk.Label(self.label, text="This store accepts Visa, Mastercard, AMEX, Discover and Optima cards.").grid(
+                    row=row, column=col, columnspan=6, sticky="w")
+                cwd = os.getcwd()
+                imagesPath = Path(cwd, "images")
+                imgPath = imagesPath / "cards.png"
+                img = tk.PhotoImage(file=rf"{imgPath}")
+                cards = tk.Label(self.label, image=img)
+                cards.image = img
+                cards.grid(row=row+1, column=col, columnspan=6, sticky="w")
+                row += 2
 
         # Discounts
         if(self.getNumBoxes() >= 150):
@@ -103,10 +135,12 @@ class CheckoutPage(Page):
 
     def validate(self):
         error = False
+        count = 0  # much better ways
         for entry in self.entries:
-            if(not entry[1].get()):
+            if(not entry[1].get() and count != 2):
                 self.errorMessage(entry[1])
                 error = True
+            count += 1
         if(not error):
             self.processOrder()
 
