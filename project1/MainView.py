@@ -21,9 +21,6 @@ class MainView(tk.Frame):
         squareBox = tk.PhotoImage(file=rf"{squareBoxPath}")
         rectangleBox = tk.PhotoImage(file=rf"{rectangleBoxPath}")
 
-        #squareBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box1.png")
-        #rectangleBox = tk.PhotoImage(file=rf"{scriptDir}\UIProj\box2.png")
-
         boxes = [Box("8\" Square Box",0.51, squareBox),
                  Box("11\" Square Box",1.22,squareBox),
                  Box("15\" Square Box",1.75,squareBox),
@@ -85,7 +82,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
-    root.title("BlueBox")
+    root.title("BlueBox Store")
     root.wm_geometry("1280x720")
     root.configure(background = "white")
 
@@ -98,7 +95,7 @@ if __name__ == "__main__":
     mainImage.image = img
     mainImage.grid(row = 0, column = 0, sticky = "n", columnspan = 4)
 
-    # Menu Bar
+    # Menu Bar  Help > About | Contact
     menuBar = tk.Menu(main)
     helpMenu = tk.Menu(menuBar, tearoff = 0)
     helpMenu.add_command(label = 'About', underline = 0, command = aboutUs)
