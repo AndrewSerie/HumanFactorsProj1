@@ -99,6 +99,12 @@ class ViewCartPage(Page):
                 total += self.getBoxTotal(box)
                 self.cartItems.append(quant)
 
+                # Remove item button
+                removeBtn = tk.Button(
+                    self.label, text='Remove', command=lambda: self.removeItemFromCart(box))
+                removeBtn.grid(row=currentRow+1, column=9, sticky="e")
+                self.cartItems.append(removeBtn)
+
                 # seperator
                 sep = ttk.Separator(self.label)
                 sep.grid(row=currentRow+4, column=0,
@@ -123,6 +129,17 @@ class ViewCartPage(Page):
                 row=3, column=2, columnspan=8, pady=(30, 0))
             tk.Button(self.label, text='Back to Store', width=15,
                       command=self.hide).grid(row=4, column=5, columnspan=2)
+
+    def removeItemFromCart(self, box):
+        for item in self.cart:
+            if(item.name == box.name and item.addOns == box.addOns):
+                self.cart.remove(box)
+
+        # reinit cart
+        for item in self.cartItems:
+            item.grid_forget()
+        self.cartItems.clear()
+        self.setCart()
 
     def addItemToCart(self, newBox):
         found = False
