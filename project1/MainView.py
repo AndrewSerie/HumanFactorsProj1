@@ -47,20 +47,24 @@ class MainView(tk.Frame):
         imagesPath = Path(cwd, "images")
         squareBoxPath = imagesPath / "box1.png"
         rectangleBoxPath = imagesPath / "box2.png"
+        #rectangleBoxSmPath = imagesPath / "box2_sm.png"
+        squareBoxSmPath = imagesPath / "box1_sm.png"
         squareBox = tk.PhotoImage(file=rf"{squareBoxPath}")
+        squareBoxSm = tk.PhotoImage(file=rf"{squareBoxSmPath}")
         rectangleBox = tk.PhotoImage(file=rf"{rectangleBoxPath}")
+        #rectangleBoxSm = tk.PhotoImage(file=rf"{rectangleBoxSmPath}")
 
         # Set all box products TODO: ADD ALL BOXES
-        boxes = [Box("8\" Square Box", 0.51, squareBox, "Small 8in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
-                 Box("11\" Square Box", 1.22, squareBox,
+        boxes = [Box("8\" Square Box", 0.51, squareBox, squareBoxSm, "Small 8in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                 Box("11\" Square Box", 1.22, squareBox, squareBoxSm,
                      "Medium 11in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
-                 Box("14\" Square Box", 1.33, squareBox,
+                 Box("14\" Square Box", 1.33, squareBox, squareBoxSm,
                      "Large 14in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
-                 Box("16\" Square Box", 1.67, squareBox,
+                 Box("16\" Square Box", 1.67, squareBox, squareBoxSm,
                      "Large 16in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
-                 Box("12\"x9\"x6\" Rectangle Box", 0.80, rectangleBox,
+                 Box("12\"x9\"x6\" Rectangle Box", 0.80, rectangleBox, squareBoxSm,
                      "Small rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
-                 Box("13\"x9\"x11\" Rectangle Box", 1.24, rectangleBox,
+                 Box("13\"x9\"x11\" Rectangle Box", 1.24, rectangleBox, squareBoxSm,
                      "Medium rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  ]
 
@@ -105,7 +109,7 @@ def aboutUs():
     aboutUsWindow.wm_geometry("385x250")
     aboutUsWindow.configure(background="white")
     tk.Label(aboutUsWindow, text="About us").pack()
-    B1 = ttk.Button(aboutUsWindow, text="Okay",
+    B1 = ttk.Button(aboutUsWindow, text="Close",
                     command=lambda: aboutUsWindow.destroy())
     B1.pack()
 
@@ -116,7 +120,7 @@ def contactUs():
     contactUsWindow.wm_geometry("385x250")
     contactUsWindow.configure(background="white")
     tk.Label(contactUsWindow, text="Contact us").pack()
-    B1 = ttk.Button(contactUsWindow, text="Okay",
+    B1 = ttk.Button(contactUsWindow, text="Close",
                     command=lambda: contactUsWindow.destroy())
     B1.pack()
 

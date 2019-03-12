@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from ViewCartPage import ViewCartPage
 from page import Page
 from box import Box
@@ -58,7 +59,8 @@ class ViewItemPage(Page):
 
     def sendBox(self, box):
         # Set box instance
-        self.box = Box(box.name, box.price, box.image, box.description)
+        self.box = Box(box.name, box.price, box.image,
+                       box.imageSm, box.description)
         boxItem = tk.Label(self.label, image=box.image)
         boxItem.image = box.image
         boxItem.grid(row=1, column=0, columnspan=3, rowspan=5)
@@ -123,6 +125,8 @@ class ViewItemPage(Page):
                 count += 1
         self.box.quantity = self.boxQ.get()
         self.cart.addItemToCart(self.box)
+        tk.messagebox.showinfo(
+            "Added to cart", "Success! The item was added to your cart.")
         self.hide()
 
     # Nav to ViewCart page
