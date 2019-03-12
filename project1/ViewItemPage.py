@@ -9,6 +9,7 @@ import os
 
 
 class ViewItemPage(Page):
+    # define all of the add-on items and prices
     addOns = [AddOnItem("Packing Tape", 4.50),
               AddOnItem("Packing Wrap", 15.00),
               AddOnItem("Packing Bags", 10.00),
@@ -40,17 +41,29 @@ class ViewItemPage(Page):
             row=0, column=0, sticky=(tk.N + tk.W))
 
     def sendBox(self, box):
+        # Set box instance
         self.box = Box(box.description, box.price, box.image)
         boxItem = tk.Label(self.label, image=box.image)
         boxItem.image = box.image
         boxItem.grid(row=6, column=1, rowspan=5)
-        tk.Label(
-            self.label, text=box.description).grid(row=6, column=2)
-        tk.Label(self.label, text="$" +
-                 str(box.price) + "/ea").grid(row=7, column=2)
 
+        # Set Product Name TODO: Change to name
+        tk.Label(self.label, text=box.description,
+                 font="Helvetica 28 bold").grid(row=6, column=2)
+
+        # Set Product price
+        tk.Label(self.label, text="Price ",
+                 font="Helvetica 20 bold").grid(row=7, column=2)
+        tk.Label(self.label, text="$"+str(box.price)+"/ea",
+                 font="Helvetica 20").grid(row=7, column=3)
+
+        # TODO: Set product description
+
+        # Set stock status
         tk.Label(self.label, text="In Stock",
                  fg="light green", font="Helvetica 16 bold").grid(row=8, column=2)
+
+        # Quantity spinbox
         self.boxQ = tk.IntVar()
         self.boxQ.set(box.quantity)
         self.boxQ.trace_add("write", self.updateQuantity)
@@ -58,6 +71,7 @@ class ViewItemPage(Page):
             self.label, from_=1, to=2500, textvariable=self.boxQ)
         self.spinBox.grid(column=4, row=6)
 
+        # Add-ons
         self.vars = []
         row = 7
         for pick in self.addOns:
@@ -67,15 +81,20 @@ class ViewItemPage(Page):
             chk.grid(row=row, column=4)
             row += 1
             self.vars.append(var)
-        tk.Button(
-            self.label, text="Add Item to Cart", command=self.addToCart).grid(row=row+1, column=4)
 
+        # Add to cart button
+        tk.Button(self.label, text="Add Item to Cart",
+                  command=self.addToCart).grid(row=row+2, column=4)
+
+    # clear out the box
     def clearBox(self):
         self.box = None
 
+    # Update quantity trace
     def updateQuantity(self, *args):
         print("quantity updated")  # idk just need something here
 
+    # Add item to the cart
     def addToCart(self):
         count = 0
         for var in self.vars:
@@ -86,6 +105,7 @@ class ViewItemPage(Page):
         self.cart.addItemToCart(self.box)
         self.hide()
 
+    # Nav to ViewCart page
     def ViewCartPageNav(self):
         self.hide()
         self.master.ViewCartPageNav()
