@@ -143,6 +143,9 @@ class CheckoutPage(Page):
             count += 1
         if(not error):
             self.processOrder()
+        else:
+            tk.messagebox.showwarning(
+                "Missing Required Fields", "You are missing information in some required fields. Please enter the required information.")
 
     def errorMessage(self, field):
         field.insert(0, "This field is required")
