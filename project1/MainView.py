@@ -68,17 +68,17 @@ class MainView(tk.Frame):
         rectangleBox = tk.PhotoImage(file=rf"{rectangleBoxPath}")
         rectangleBoxSm = tk.PhotoImage(file=rf"{rectangleBoxSmPath}")
 
-        boxes = [Box("8\" Square Box", 0.51, squareBox, squareBoxSm, "Small 8in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+        boxes = [Box("8\" Square Box", 0.51, squareBox, squareBoxSm, "Small 8in. corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  Box("11\" Square Box", 1.22, squareBox, squareBoxSm,
-                     "Medium 11in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                     "Medium 11in. corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  Box("14\" Square Box", 1.33, squareBox, squareBoxSm,
-                     "Large 14in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                     "Large 14in. corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  Box("16\" Square Box", 1.67, squareBox, squareBoxSm,
-                     "Large 16in. corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                     "Large 16in. corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  Box("12\"x9\"x6\" Rectangle Box", 0.80, rectangleBox, rectangleBoxSm,
-                     "Small rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                     "Small rectangular corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  Box("13\"x9\"x11\" Rectangle Box", 1.24, rectangleBox, rectangleBoxSm,
-                     "Medium rectangular corrugated box that can be used for many applications icluding, but not limited to: shipping, moving, and storage. Now environment friendly!"),
+                     "Medium rectangular corrugated box that can be used for many applications including, but not limited to: shipping, moving, and storage. Now environment friendly!"),
                  ]
 
         currentRow = 1
