@@ -1,14 +1,28 @@
+# ********************************************************
+# ***    Students: Mike Bauer                          ***
+# ***              Adam Decker                         ***
+# ***              Andrew Serie                        ***
+# ***              Sean Walter                         ***
+# ***       Class: Human Factors and User Interface    ***
+# ***  Instructor: Gamradt                             ***
+# ***  Assignment: 2                                   ***
+# ***    Due Date: 02-12-19                            ***
+# ********************************************************
+# *** Description: This project allows customers to    ***
+# ***              purchase boxes and box accessories  ***
+# ***              with a simple to use UI designed    ***
+# ***              using Python tk/ttk                 ***
+# ********************************************************
+
+
 import tkinter as tk
 from tkinter import ttk
 import os
 from pathlib import Path    # Handing cross-platform paths
-# Pages
 from box import Box
 from ViewCartPage import ViewCartPage
 from ViewItemPage import ViewItemPage
 from CheckoutPage import CheckoutPage
-
-# Class for MainView
 
 
 class MainView(tk.Frame):
@@ -102,26 +116,59 @@ class MainView(tk.Frame):
         viewCheckoutPageRef.show()
 
 
+def about(event):
+    aboutUs()
+
+
 def aboutUs():
     aboutUsWindow = tk.Tk()
     aboutUsWindow.wm_title("About")
-    aboutUsWindow.wm_geometry("385x250")
-    aboutUsWindow.configure(background="white")
-    tk.Label(aboutUsWindow, text="About us").pack()
-    B1 = ttk.Button(aboutUsWindow, text="Close",
-                    command=lambda: aboutUsWindow.destroy())
-    B1.pack()
+
+    aboutUsWindow.grid_columnconfigure(0, weight=1)
+    aboutUsWindow.grid_columnconfigure(1, weight=1)
+    aboutUsWindow.grid_columnconfigure(2, weight=1)
+    aboutUsWindow.wm_geometry("400x275")
+
+    tk.Label(aboutUsWindow, text="About Us",
+             font="Helvetica 16 bold").grid(row=0, column=0, columnspan=3, sticky="w")
+    tk.Label(aboutUsWindow, text="We are a small company founded by 4 people who have always had a passion for corrugated fiberboard, or as its commonly known, cardboard.  We started creating our own boxes of all sizes and giving them away for free. Soon we realized that we could turn our passion into a business and the rest is history!",
+             wraplength=400, justify="left").grid(row=1, column=0, columnspan=3, sticky="w")
+    tk.Label(aboutUsWindow, text="Authors",
+             font="Helvetica 16 bold").grid(row=2, column=0, sticky="w")
+    tk.Label(aboutUsWindow, text="Mike Bauer\n Adam Decker\n Andrew Serie\nSean Walter").grid(
+        row=3, column=0, rowspan=4, sticky="w")
+    tk.Label(aboutUsWindow, text="Assignment",
+             font="Helvetica 16 bold").grid(row=2, column=1, sticky="w")
+    tk.Label(aboutUsWindow, text="1 & 2 - tk/ttk").grid(
+        row=3, column=1, sticky="w")
+    tk.Label(aboutUsWindow, text="Course",
+             font="Helvetica 16 bold").grid(row=2, column=2, sticky="w")
+    tk.Label(aboutUsWindow, text="SE330 Human Factors").grid(
+        row=3, column=2, sticky="w")
+    ttk.Button(aboutUsWindow, text="Close",
+               command=lambda: aboutUsWindow.destroy()).grid(row=7, column=0, columnspan=3)
+
+
+def contact(event):
+    contactUs()
 
 
 def contactUs():
     contactUsWindow = tk.Tk()
-    contactUsWindow.wm_title("Contact Information")
-    contactUsWindow.wm_geometry("385x250")
-    contactUsWindow.configure(background="white")
-    tk.Label(contactUsWindow, text="Contact us").pack()
-    B1 = ttk.Button(contactUsWindow, text="Close",
-                    command=lambda: contactUsWindow.destroy())
-    B1.pack()
+    contactUsWindow.wm_title("Contact")
+    contactUsWindow.wm_geometry("300x150")
+
+    contactUsWindow.grid_columnconfigure(0, weight=1)
+    contactUsWindow.grid_columnconfigure(1, weight=1)
+    contactUsWindow.grid_columnconfigure(2, weight=1)
+
+    tk.Label(contactUsWindow, text="Customer Support",
+             font="Helvetica 16 bold").pack()
+    tk.Label(contactUsWindow, text="help@bluebox.com").pack()
+    tk.Label(contactUsWindow, text="+1 605-123-4567").pack()
+    tk.Label(contactUsWindow, text="Toll Free - 24/7 Support").pack()
+    ttk.Button(contactUsWindow, text="Close",
+               command=lambda: contactUsWindow.destroy()).pack()
 
 
 if __name__ == "__main__":
@@ -136,10 +183,14 @@ if __name__ == "__main__":
     # Menu Bar  Help > About | Contact
     menuBar = tk.Menu(main)
     helpMenu = tk.Menu(menuBar, tearoff=0)
-    helpMenu.add_command(label='About', underline=0, command=aboutUs)
-    helpMenu.add_command(label='Contact', underline=0, command=contactUs)
+    helpMenu.add_command(label='About', underline=1,
+                         command=aboutUs, accelerator="Command+A")
+    helpMenu.add_command(label='Contact', underline=0,
+                         command=contactUs, accelerator="Command+C")
     menuBar.add_cascade(label="Help", menu=helpMenu)
     root.config(menu=menuBar)
+    root.bind_all("<Command-a>", about)
+    root.bind_all("<Command-c>", contact)
 
     # main loop
     root.mainloop()

@@ -136,7 +136,6 @@ class ViewItemPage(Page):
 
             screen_width = self.winfo_screenwidth()
             screen_height = self.winfo_screenheight()
-
             succMsg.wm_geometry("+%d+%d" %
                                 ((screen_width/2) - 100, (screen_height/2) - 100))
             ttk.Label(succMsg,
