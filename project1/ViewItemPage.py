@@ -129,11 +129,33 @@ class ViewItemPage(Page):
                 count += 1
             self.box.quantity = self.boxQ.get()
             self.cart.addItemToCart(self.box)
-            tk.messagebox.showinfo(
-                "Added to cart", "Success! The item was added to your cart.")
-            self.hide()
+
+            # show success message
+            succMsg = tk.Tk()
+            succMsg.wm_title("Added to Cart")
+
+            screen_width = self.winfo_screenwidth()
+            screen_height = self.winfo_screenheight()
+
+            succMsg.wm_geometry("+%d+%d" %
+                                ((screen_width/2) - 100, (screen_height/2) - 100))
+            ttk.Label(succMsg,
+                      text="Success! The item was added to your cart.").pack()
+            ttk.Button(succMsg, text="Back to store",
+                       command=lambda: self.navHome(succMsg)).pack()
+            ttk.Button(succMsg, text="Continue to cart",
+                       command=lambda: self.ViewCartPageNavMsg(succMsg)).pack()
 
     # Nav to ViewCart page
     def ViewCartPageNav(self):
         self.hide()
         self.master.ViewCartPageNav()
+
+    def ViewCartPageNavMsg(self, succMsg):
+        succMsg.destroy()
+        self.master.ViewCartPageNav()
+        self.hide()
+
+    def navHome(self, succMsg):
+        succMsg.destroy()
+        self.hide()
